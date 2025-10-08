@@ -76,7 +76,7 @@ def get_ai_analysis(data_for_ai, api_key):
     except APIError as e:
         return f"Lỗi gọi Gemini API: Vui lòng kiểm tra Khóa API hoặc giới hạn sử dụng. Chi tiết lỗi: {e}"
     except KeyError:
-        return "Lỗi: Không tìm thấy Khóa API 'GEMINI_API_KEY=AIzaSyB7JgcpTstbkrIMZ0IJkZcJV_yVKv0bdKs'. Vui lòng kiểm tra cấu hình Secrets trên Streamlit Cloud."
+        return "Lỗi: Không tìm thấy Khóa API 'GEMINI_API_KEY'. Vui lòng kiểm tra cấu hình Secrets trên Streamlit Cloud."
     except Exception as e:
         return f"Đã xảy ra lỗi không xác định: {e}"
 
