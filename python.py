@@ -87,20 +87,23 @@ def get_chat_response(prompt, api_key):
         # Lấy lịch sử chat hiện tại để duy trì ngữ cảnh
         history = []
         for message in st.session_state.chat_messages:
-            # Chuyển đổi định dạng Streamlit sang định dạng API
+            # Sửa lỗi 400 INVALID_ARGUMENT: 
+            # Chuyển đổi Streamlit role ('assistant') sang Gemini API role ('model')
+            api_role = 'model' if message["role"] == 'assistant' else message["role"]
+            
             history.append({
-                "role": message["role"],
+                "role": api_role,
                 "parts": [{"text": message["content"]}]
             })
         
-        # Thêm tin nhắn mới nhất của người dùng
-        # Không cần thêm prompt vào history ở đây vì nó đã được thêm vào st.session_state trước khi gọi hàm này
+        # Tin nhắn mới nhất của người dùng đã được thêm vào session state trước khi gọi hàm này, 
+        # nên history đã chứa tin nhắn đó.
         
         model_name = 'gemini-2.5-flash' # Model phù hợp cho hội thoại
         
         response = client.models.generate_content(
             model=model_name,
-            # Gửi toàn bộ lịch sử chat (bao gồm cả tin nhắn mới nhất của người dùng)
+            # Gửi toàn bộ lịch sử chat 
             contents=history
         )
         return response.text
